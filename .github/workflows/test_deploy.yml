@@ -69,16 +69,16 @@ jobs:
           bundle config --local without production
           bundle install
 
-    - name: Install SSH key
-      run: |
-        mkdir -p -m 700 ~/.ssh
-        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/rails-deploy-webapp
-        chmod 600 ~/.ssh/rails-deploy-webapp
+      - name: Install SSH key
+        run: |
+          mkdir -p -m 700 ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/rails-deploy-webapp
+          chmod 600 ~/.ssh/rails-deploy-webapp
 
-    - name: Capistrano deploy
-      run: |
-        eval $(ssh-agent)
-        ssh-add ~/.ssh/rails-deploy-webapp
-        bundle exec cap production deploy
-      env:
-        CAP_SERVER: ${{ secrets.TARGET_HOSTNAME }}
+      - name: Capistrano deploy
+        run: |
+          eval $(ssh-agent)
+          ssh-add ~/.ssh/rails-deploy-webapp
+          bundle exec cap production deploy
+        env:
+          CAP_SERVER: ${{ secrets.TARGET_HOSTNAME }}
